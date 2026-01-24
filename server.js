@@ -14,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+
 // Routes
 app.use("/api", contactRoutes); // all routes in contactRoutes will be prefixed with /api
 
