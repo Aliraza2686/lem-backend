@@ -19,6 +19,7 @@ console.log(email, password)
 
     const user = await User.findOne({ email });
 
+    console.log({ message: "Invalid credentials1", user })
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
