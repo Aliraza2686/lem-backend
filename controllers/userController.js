@@ -18,7 +18,6 @@ export const loginUser = async (req, res) => {
     }
 
     const user = await User.findOne({ email });
-    console.log({ user })
 
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -31,22 +30,18 @@ export const loginUser = async (req, res) => {
     }
 
     const token = generateToken(user._id);
-    console.log({ message: "Invalid credentials1", user, isMatch, token })
 
     // 🍪 Set cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, // set false in local dev if needed
-      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.json({
       message: "Login successful",
-      user: {
-        id: user._id,
-        email: user.email,
-      },
+      user: user,
     });
   } catch (error) {
     // res.status(500).json({ message: "Server error" });
@@ -58,7 +53,7 @@ export const loginUser = async (req, res) => {
 };
 
 // 🚪 LOGOUT
-export const logoutUser = (req, res) => {
+export const logoutUser = (_req, res) => {
   res.clearCookie("token");
   res.json({ message: "Logged out successfully" });
 };
