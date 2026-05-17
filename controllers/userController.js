@@ -9,6 +9,8 @@ const generateToken = (userId) => {
 
 // 🔐 LOGIN
 export const loginUser = async (req, res) => {
+  const users  = User.find({})
+return res.status(200).json({users})
   try {
     const { email, password } = req.body;
 console.log(email, password)
