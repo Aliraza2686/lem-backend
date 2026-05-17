@@ -11,13 +11,14 @@ const generateToken = (userId) => {
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-console.log(email, password)
+    console.log(email, password)
     // validation
     if (!email || !password) {
       return res.status(400).json({ message: "All fields required" });
     }
 
     const user = await User.findOne({ email });
+    console.log({ user })
 
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -30,7 +31,7 @@ console.log(email, password)
     }
 
     const token = generateToken(user._id);
-    console.log({ message: "Invalid credentials1", user , isMatch, token})
+    console.log({ message: "Invalid credentials1", user, isMatch, token })
 
     // 🍪 Set cookie
     res.cookie("token", token, {
@@ -48,7 +49,11 @@ console.log(email, password)
       },
     });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    // res.status(500).json({ message: "Server error" });
+    console.log("LOGIN ERROR:", error);
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
