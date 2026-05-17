@@ -19,7 +19,6 @@ console.log(email, password)
 
     const user = await User.findOne({ email });
 
-    console.log({ message: "Invalid credentials1", user })
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -31,6 +30,7 @@ console.log(email, password)
     }
 
     const token = generateToken(user._id);
+    console.log({ message: "Invalid credentials1", user , isMatch, token})
 
     // 🍪 Set cookie
     res.cookie("token", token, {
