@@ -9,8 +9,6 @@ const generateToken = (userId) => {
 
 // 🔐 LOGIN
 export const loginUser = async (req, res) => {
-  const users  = User.find({})
-return res.status(200).json({users})
   try {
     const { email, password } = req.body;
 console.log(email, password)
@@ -50,7 +48,7 @@ console.log(email, password)
       },
     });
   } catch (error) {
-    res.status(500).json({ message: "Server error" , error});
+    res.status(500).json({ message: "Server error" });
   }
 };
 
