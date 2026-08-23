@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import contactRoutes from "./routes/contactRoutes.js";
 import visitorRoutes from './routes/visitorRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import articleRoutes from './routes/articleRoutes.js';
 
 import sgMail from "@sendgrid/mail";
 import connectDB from "./config/db.js";
@@ -43,6 +45,8 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 app.use("/api", contactRoutes);
 app.use('/api/visitors', visitorRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/articles', articleRoutes);
 
 app.get("/test", (req, res) => {
   res.json({ test: "running" });

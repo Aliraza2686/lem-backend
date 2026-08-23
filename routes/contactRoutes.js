@@ -14,7 +14,34 @@ router.post("/submit-contact-form", async (req, res) => {
 
   console.info(process.env.SENDGRID_API_KEY, "process.env.SENDGRID_API_KEY")
   try {
-    const { name, email, phone, country, message, product_slug } = req.body;
+    const {
+      name,
+      email,
+      phone,
+      country,
+      message,
+      product_slug,
+      quantity,
+      unit,
+      packaging,
+      incoterm,
+      destinationPort,
+    } = req.body;
+
+    const safeName = escapeHtml(name || "");
+    const safeEmail = escapeHtml(email || "");
+    const safePhone = escapeHtml(phone || "");
+    const safeCountry = escapeHtml(country || "");
+    const safeMessage = escapeHtml(message || "");
+    const safeProduct = escapeHtml(product_slug || "N/A");
+    const safeQuantity = escapeHtml(quantity || "");
+    const safeUnit = escapeHtml(unit || "");
+    const safePackaging = escapeHtml(packaging || "");
+    const safeIncoterm = escapeHtml(incoterm || "");
+    const safeDestinationPort = escapeHtml(destinationPort || "");
+
+    const optionalRow = (label, value) =>
+      value ? `<p><strong style="color:#0d47a1;">${label}:</strong> ${value}</p>` : "";
 
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; background: #f4f6f8; padding: 20px;">
@@ -26,12 +53,17 @@ router.post("/submit-contact-form", async (req, res) => {
           </tr>
           <tr>
             <td style="padding:20px; color:#333333; font-size:15px; line-height:1.6;">
-              <p><strong style="color:#0d47a1;">Name:</strong> ${name}</p>
-              <p><strong style="color:#0d47a1;">Email:</strong> ${email}</p>
-              <p><strong style="color:#0d47a1;">Phone:</strong> ${phone}</p>
-              <p><strong style="color:#0d47a1;">Country:</strong> ${country}</p>
-              <p><strong style="color:#0d47a1;">Message:</strong> ${message}</p>
-              <p><strong style="color:#0d47a1;">Product Slug:</strong> ${product_slug || "N/A"}</p>
+              <p><strong style="color:#0d47a1;">Name:</strong> ${safeName}</p>
+              <p><strong style="color:#0d47a1;">Email:</strong> ${safeEmail}</p>
+              <p><strong style="color:#0d47a1;">Phone:</strong> ${safePhone}</p>
+              <p><strong style="color:#0d47a1;">Country:</strong> ${safeCountry}</p>
+              <p><strong style="color:#0d47a1;">Message:</strong> ${safeMessage}</p>
+              ${optionalRow("Quantity", safeQuantity)}
+              ${optionalRow("Unit", safeUnit)}
+              ${optionalRow("Packaging", safePackaging)}
+              ${optionalRow("Incoterm", safeIncoterm)}
+              ${optionalRow("Destination Port", safeDestinationPort)}
+              <p><strong style="color:#0d47a1;">Product Slug:</strong> ${safeProduct}</p>
             </td>
           </tr>
           <tr>

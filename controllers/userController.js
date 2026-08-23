@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import User from "../modals/User.js";
 
-const generateToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+const generateToken = (userId, role) => {
+  return jwt.sign({ id: userId, role }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
 };
@@ -29,7 +29,7 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role);
 
     // 🍪 Set cookie
     res.cookie("token", token, {
@@ -51,6 +51,22 @@ export const loginUser = async (req, res) => {
     });
   }
 };
+
+export const getSingelUser = async (req, res) => {
+  const { id } = req.params
+  try {
+    const user = await User.findOne({ id })
+    if (!user) {
+      res.json({ "message": "No user Found" })
+    } else {
+      res.json({ "message": "success", user })
+    }
+
+  } catch (error) {
+    res.json({ error })
+  }
+}
+
 
 // 🚪 LOGOUT
 export const logoutUser = (_req, res) => {
