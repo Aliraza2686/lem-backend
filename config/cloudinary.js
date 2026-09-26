@@ -15,10 +15,12 @@ cloudinary.config({
 });
 
 // Uploads a buffer (from multer memory storage) to Cloudinary. Never touches local disk.
-export const uploadBufferToCloudinary = (buffer, { folder = "articles", resourceType = "image" } = {}) => {
+// Any extra upload options (e.g. filename_override) are passed straight through.
+export const uploadBufferToCloudinary = (buffer, { folder = "articles", resourceType = "image", ...options } = {}) => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
+        ...options,
         folder,
         resource_type: resourceType,
       },
