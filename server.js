@@ -8,6 +8,7 @@ import userRoutes from './routes/userRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import articleRoutes from './routes/articleRoutes.js';
 import certificationRoutes from './routes/certificationRoutes.js';
+import galleryRoutes from './routes/galleryRoutes.js';
 
 import sgMail from "@sendgrid/mail";
 import connectDB from "./config/db.js";
@@ -49,6 +50,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/certifications', certificationRoutes);
+app.use('/api/gallery', galleryRoutes);
 
 app.get("/test", (req, res) => {
   res.json({ test: "running" });
